@@ -1,5 +1,7 @@
 import express from "express";
-import dotenv from dotenv;
+import dotenv from "dotenv";
+// const express = require("express");
+// const dotenv = require("dotenv");
 
 dotenv.config();
 
@@ -16,10 +18,11 @@ if (!UNSPLASH_API_KEY){
 app.use(express.static("public"));
 
 /*Get 15 random photos from Unsplash*/
-app.get(" ", async(req, res) => {
+app.get("/api/photos", async(req, res) => {
     try{
         const count = 15;
-        const url = `https://api.unsplash/photos/random?count=${count}`;
+        // const url = `https://api.unsplash/photos/random?count=${count}`;
+        const url = `https://api.unsplash.com/photos/random?count=${count}`;
 
         const respone = await fetch(url, {
             headers: {
@@ -38,7 +41,7 @@ app.get(" ", async(req, res) => {
         const photos = data.map((photo) => ({
             id: photo.id,
             alt: photo.alt_description, 
-            image: photo.url.small,
+            image: photo.urls.small,
             link: photo.links.html,
         }));
 
@@ -46,8 +49,12 @@ app.get(" ", async(req, res) => {
     }
     catch(error){
         console.error("Error fetching Unsplash: ", error);
-        res.status(500).json({error: "Server error"})
+        res.status(500).json({error: "Server error"});
     }
+});
+
+app.get("/api/test", (req, res) => {
+    res.json({ok: true});
 });
 
 app.listen(PORT, () => {
