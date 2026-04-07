@@ -21,7 +21,6 @@ app.use(express.static("public"));
 app.get("/api/photos", async(req, res) => {
     try{
         const count = 15;
-        // const url = `https://api.unsplash/photos/random?count=${count}`;
         const url = `https://api.unsplash.com/photos/random?count=${count}`;
 
         const respone = await fetch(url, {
